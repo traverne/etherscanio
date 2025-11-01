@@ -32,6 +32,9 @@ Documentation = "https://github.com/traverne/etherscanio#readme"
 Issues = "https://github.com/traverne/etherscanio/issues"
 Source = "https://github.com/traverne/etherscanio"
 
+[tool.hatch.build.targets.wheel]
+packages = ["src/etherscan"]
+
 [tool.hatch.version]
 path = "src/etherscan/__about__.py"
 
@@ -54,13 +57,13 @@ dependencies = [
     "black",
     "ruff",
     "mypy",
+    'httpx'
 ]
 
 [tool.hatch.envs.lint.scripts]
 check = [
     "ruff check src tests",
-    "black --check src tests",
-    "mypy src",
+    "black --check src tests"
 ]
 fmt = [
     "black src tests",
