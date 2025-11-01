@@ -7,12 +7,15 @@ from typing import Any
 from .exceptions import validate
 from .modules import (
     accounts,
+    contracts,
     transactions,
     tokens,
     statistics,
     blocks,
     gastracker,
     proxy,
+    logs,
+    nametags,
 )
 
 
@@ -21,12 +24,15 @@ class Etherscan:
     timeout: int = 10
 
     accounts: accounts.Accounts
-    transactions: transactions.Transactions
+    blocks: blocks.Blocks
+    contracts: contracts.Contracts
+    gastracker: gastracker.GasTracker
+    logs: logs.Logs
+    nametags: nametags.Nametags
+    eth: proxy.Proxy
     statistics: statistics.Statistics
     tokens: tokens.Tokens
-    blocks: blocks.Blocks
-    gastracker: gastracker.GasTracker
-    eth: proxy.Proxy
+    transactions: transactions.Transactions
 
     def __init__(self, chain_id: int, api_key: str = chr(0x20)) -> None:
         validate(Etherscan.is_supported_chain(chain_id, api_key), "Chain not supported")
@@ -49,6 +55,9 @@ class Etherscan:
         self.blocks = blocks.Blocks(self)
         self.gastracker = gastracker.GasTracker(self)
         self.eth = proxy.Proxy(self)
+        self.logs = logs.Logs(self)
+        self.nametags = nametags.Nametags(self)
+        self.contracts = contracts.Contracts(self)
 
     def request(self, payload: dict, method: str = "GET") -> Any:
         payload.update(self.data)
